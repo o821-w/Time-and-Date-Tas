@@ -48,8 +48,8 @@
         }
 
         .date {
-            font-size: 20px;
-            font-weight: 400;
+            font-size: 34px;
+            font-weight: 600;
             line-height: 1;
             white-space: nowrap;
         }
@@ -59,7 +59,7 @@
 <body>
 
     <div class="overlay">
-        <div class="time" id="time">--:--</div>
+        <div class="time" id="time">--:-- --</div>
         <div class="date" id="date">--/--/----</div>
     </div>
 
@@ -69,9 +69,9 @@
 
             const timeOptions = {
                 timeZone: "Australia/Hobart",
-                hour: "2-digit",
+                hour: "numeric",
                 minute: "2-digit",
-                hour12: false
+                hour12: true
             };
 
             const dateOptions = {
@@ -81,20 +81,21 @@
                 year: "numeric"
             };
 
-            document.getElementById("time").textContent =
-                new Intl.DateTimeFormat("en-AU", timeOptions).format(now);
+            let time = new Intl.DateTimeFormat("en-AU", timeOptions).format(now);
+
+            // Make AM/PM lowercase
+            time = time.replace("AM", "am").replace("PM", "pm");
+
+            document.getElementById("time").textContent = time;
 
             document.getElementById("date").textContent =
                 new Intl.DateTimeFormat("en-AU", dateOptions).format(now);
         }
 
-        // Update immediately
         updateTime();
 
-        // Check for changes every second, but only display hours and minutes
         setInterval(updateTime, 1000);
     </script>
 
 </body>
 </html>
-```
